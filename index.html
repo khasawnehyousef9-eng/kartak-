@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>كرتك: شو لقبك الحقيقي؟</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4EFFF;--ink:#1E1B4B;--card:#fff;--line:#D9D0F5;--acc:#FF4F7B;--sun:#FFC83D;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14122E;--ink:#F1EDFF;--card:#221F4A;--line:#3A3670}}
+:root[data-theme="dark"]{--bg:#14122E;--ink:#F1EDFF;--card:#221F4A;--line:#3A3670}
+*{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Cairo,Tahoma,Arial,sans-serif;line-height:1.7}
+main{max-width:460px;margin:0 auto;padding:28px 20px 40px}
+h1{font-size:2.6rem;font-weight:900;line-height:1.15;margin:12px 0 10px}
+p{margin:0 0 16px}
+.sub{font-size:1.1rem;opacity:.85}
+button{font:inherit;cursor:pointer;border:0}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.go{display:block;width:100%;background:var(--acc);color:#fff;font-weight:900;font-size:1.2rem;padding:14px;border-radius:16px;margin-top:22px}
+.ghost{display:block;width:100%;background:transparent;color:var(--ink);border:2px solid var(--line);font-weight:700;padding:12px;border-radius:16px;margin-top:10px}
+.bar{height:8px;background:var(--line);border-radius:8px;margin:6px 0 22px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.q{font-size:1.5rem;font-weight:900;margin:0 0 18px}
+.opt{display:block;width:100%;text-align:right;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:13px 16px;margin-bottom:10px;font-weight:700;font-size:1.05rem}
+.opt:active{border-color:var(--acc)}
+.deck{position:relative;margin:6px 0 20px}
+.deck:before{content:"";position:absolute;inset:10px -8px -10px 8px;border-radius:28px;background:var(--sun);transform:rotate(2.5deg)}
+.card{position:relative;border-radius:28px;padding:26px 22px;color:#fff}
+.tag{font-size:.95rem;opacity:.9;margin:0}
+.title{font-size:2.5rem;font-weight:900;line-height:1.15;margin:6px 0 12px}
+.desc{font-size:1.05rem;margin-bottom:20px}
+.st{display:flex;justify-content:space-between;font-weight:700;font-size:.95rem}
+.st+.bar{background:rgba(255,255,255,.3);margin:4px 0 12px}
+.st+.bar i{background:#fff}
+.foot{font-size:.85rem;opacity:.85;margin:8px 0 0}
+.msg{text-align:center;font-weight:700;min-height:1.7em;margin-top:12px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var T=[
+{n:"الصاروخ",a:"المتحمس",c:"#E5325F",d:"تبدأ عشرة مشاريع قبل الفطور، وتنجز اثنين منها بالغلط وتنجح فيهم.",w:"نقطة ضعفك: ما تعرف تهدأ"},
+{n:"الغيمة",a:"الهادي",c:"#2F6BEA",d:"ما شي يستعجلك، والغريب أن كل شي يمشي معك في الآخر.",w:"نقطة ضعفك: تأجّل حتى قرار العشاء"},
+{n:"الثعلب",a:"المدبّر",c:"#0E8A6B",d:"تعرف سعر كل شي وأين العرض الأحسن، وصاحبك دايم يسألك قبل ما يشتري.",w:"نقطة ضعفك: تحلل أكثر مما تعيش"},
+{n:"البومة",a:"السهران",c:"#6B3FD6",d:"أفكارك الذهبية تجيك بعد منتصف الليل، وصباحك مجرد تفصيل مزعج.",w:"نقطة ضعفك: النوم عدوك الأول"}
+];
+var Q=[
+{q:"الساعة 3 الفجر وأنت صاحي. شو تسوي؟",o:["أخطط لمشروع جديد","أتأمل بالسقف","أحسب مصاريف الشهر","أتفرج على فيديوهات للصبح"]},
+{q:"أصحابك يوصفونك بـ…",o:["صاخب وحماسي","رايق وهادي","ذكي وماكر","غامض شوي"]},
+{q:"طلعة مفاجئة بكرة. ردك؟",o:["جاهز بعد ثواني","خليني أنام أول","كم الميزانية؟","أنتظر لين يجي الليل"]},
+{q:"رسالة وصلتك وما تبغى ترد.",o:["أرسل ثاني بعدها","أتجاهلها بهدوء","أحلل توقيتها","أرد بعد يومين"]},
+{q:"مشروبك المفضل؟",o:["قهوة مضاعفة","شاي بالنعناع","عصير مختار بعناية","أي شي، المهم أسهر"]}
+];
+var app=document.getElementById("app"),i=0,cnt,sum;
+function home(){
+app.innerHTML='<p class="sub">اختبار ٣٠ ثانية</p><h1>شو لقبك الحقيقي؟</h1><p class="sub">جاوب على ٥ أسئلة، وبنطلع لك كرت بلقب ووصف وإحصائيات تشاركها مع أصحابك.</p><button class="go" id="s">ابدأ</button>';
+document.getElementById("s").onclick=function(){i=0;cnt=[0,0,0,0];sum=0;ask()};
+}
+function ask(){
+var x=Q[i],h='<div class="bar"><i style="width:'+(i/Q.length*100)+'%"></i></div><p class="q">'+x.q+'</p>';
+x.o.forEach(function(t,k){h+='<button class="opt" data-k="'+k+'">'+t+'</button>'});
+app.innerHTML=h;
+Array.prototype.forEach.call(app.querySelectorAll(".opt"),function(b){b.onclick=function(){
+var k=+b.getAttribute("data-k");cnt[k]++;sum+=k*(i+2);i++;i<Q.length?ask():res()}});
+}
+function res(){
+var o=[0,1,2,3].sort(function(a,b){return cnt[b]-cnt[a]||a-b}),t=T[o[0]],s=T[o[1]];
+var name=t.n+" "+s.a;
+var st=[["الطاقة",40+cnt[0]*12+cnt[3]*4],["الذكاء",40+cnt[2]*12+cnt[1]*4],["الحظ",45+(sum*7)%50]];
+var h='<div class="deck"><div class="card" style="background:'+t.c+'"><p class="tag">لقبك هو</p><div class="title">'+name+'</div><p class="desc">'+t.d+" "+s.w+'.</p>';
+st.forEach(function(e){var v=Math.min(99,e[1]);h+='<div class="st"><span>'+e[0]+'</span><span>'+v+'%</span></div><div class="bar"><i style="width:'+v+'%"></i></div>'});
+h+='<p class="foot">كرتك</p></div></div><button class="go" id="sh">شارك كرتك</button><button class="ghost" id="rt">جرّب من جديد</button><div class="msg" id="m" role="status"></div>';
+app.innerHTML=h;
+var txt="طلع لقبي «"+name+"» في كرتك! شو لقبك أنت؟";
+document.getElementById("rt").onclick=home;
+document.getElementById("sh").onclick=function(){
+var m=document.getElementById("m"),u=location.href;
+function copy(){try{navigator.clipboard.writeText(txt+" "+u).then(function(){m.textContent="انسخ الرابط وأرسله لأصحابك، تم النسخ"},function(){m.textContent=txt})}catch(e){m.textContent=txt}}
+if(navigator.share){navigator.share({text:txt,url:u}).catch(function(){})}else{copy()}
+};
+}
+home();
+</script>
+</body>
+</html>
